@@ -1,5 +1,5 @@
-% LaTeX Generic essay template
-% Copyright (C) 2017  Shen Zhou Hong <shen@hong.io>
+% LaTeX Automatic Journal Template
+% Copyright (C) 2022  Shen Zhou Hong
 %
 % This program is free software: you can redistribute it and/or modify
 % it under the terms of the GNU General Public License as published by
@@ -17,13 +17,13 @@
 % For more information on documentclass configuration, see:
 % https://texblog.org/2013/02/13/latex-documentclass-options-illustrated/#formula
 \documentclass[
-  10pt,       % 10pt, 11pt, 12pt
-  letterpaper,    % a4paper, letterpaper, a5paper, b5paper, executivepaper, legalpaper
+  11pt,       % 10pt, 11pt, 12pt
+  a4paper,    % a4paper, letterpaper, a5paper, b5paper, executivepaper, legalpaper
   final,      % draft
   onecolumn,  % twocolumn
   oneside,    % twoside
-  notitlepage % titlepage
-]{article}
+  titlepage % titlepage
+]{book}
 
 % Template preamble files. These should not be modified.
 \input{template/packages.tex}
@@ -31,19 +31,37 @@
 
 % Document Title, Author, and Date
 \title{
-  \LaTeX\ Essay Template
+  \textbf{\LaTeX\ Journal Template:} \\
+  A Template for Journals with Automatic Entry Handling
 }
 \author{
-  Shen Zhou Hong \and Institution
+  Shen Zhou Hong
 }
-\date{\today}
+\date{2022 -- 2023}
 
 % Document Begins
 \begin{document}
+
+\disablemarginnotes
+\frontmatter
+
 \maketitle
+
+\include{sections/dedication.tex}
+
 \tableofcontents
 
-\include{sections/body.tex}
-\include{sections/endpage.tex}
+\include{sections/preface.tex}
+
+\enablemarginnotes
+\mainmatter
+
+% Journal entries are automatically included from entries/ using lua
+\directlua{dofile(\string"include-entries.lua\string")}
+
+\disablemarginnotes
+\backmatter
+
+\include{sections/backmatter.tex}
 
 \end{document}

@@ -1,7 +1,7 @@
-# Shen's LaTeX Essay Template
-This is my LaTeX Essay Template. It is a best-in-class LuaLaTeX template for writing essays, dissertations, documents, and papers in the academic humanities.
+# Shen's LaTeX Journal Template
+This is my LaTeX Journal Template Template. It is currently a work in progress.
 
-![Example of documents created using this template](./collage-4.jpg)
+The below documentation is cloned from the LaTeX essay template.
 
 ## Features
 This template uses a number of advanced LaTeX features.

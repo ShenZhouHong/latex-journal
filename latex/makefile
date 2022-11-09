@@ -2,7 +2,7 @@
 # This way, PDF builds are reproducible across commits. If you are not using git,
 # set this value to a constant like 0, or the current date using command date +%s
 COMMIT_EPOCH = $(shell git log -1 --pretty=%ct)
-source_name = paper
+source_name = journal
 
 # Makes sure latexmk always runs
 .PHONY: $(source_name).pdf all clean

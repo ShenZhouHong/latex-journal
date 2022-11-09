@@ -1,16 +1,10 @@
-% Lorem Ipsum placeholder for template
-\usepackage{lipsum}                 % For lorem lipsum placeholder text
-
-% Configuration for 'fancy' headers and footers
-\usepackage{fancyhdr}               % For fancy headings
-\usepackage{lastpage}               % Gives us \lastpage
 % Settings used by \usepackage{fancyhdr}
 \fancypagestyle{fancy}{
   % Fancy Header Formatting
   \renewcommand{\headrulewidth}{0.4pt}
-  \fancyhead[L]{Senior Seminar}
+  \fancyhead[L]{Letters of a Young Philosopher}
   \fancyhead[C]{}
-  \fancyhead[R]{St. John's College}
+  \fancyhead[R]{Chapter \thechapter}
 
   % Fancy Footer Formatting
   \renewcommand{\footrulewidth}{0pt}
@@ -56,30 +50,68 @@
 % \usepackage{xeCJK}                  % For typesetting CJK characters
 % \usepackage[l2tabu, orthodox]{nag}  % Verbose warnings for typesetting
 
-% % Custom geometry for larger margin notes with assymetric body layout
-% \newgeometry{
-%   % Preserve the LaTeX default \textwidth and \textheight
-%   textwidth =\textwidth,
-%   textheight=\textheight,
-%   % Include the margin notes space when doing body calculations
-%   includemp=true,
-%   % Increase margin notes width and seperation
-%   marginparwidth=4cm,
-%   marginparsep=0.5cm,
-%   % Center doucment body vertically and horizontally
-%   hcentering=true,
-%   vcentering=true,
-%   % Minor tweaks to header and footer seperation
-%   headsep   =0.5cm,
-%   footskip  =1cm,
-% }
-%
-% % Make sure that the header and footer overhang into the marginnotes area
-% % We must call this everytime we update the page geometry, otherwise the
-% % values WILL be stale!
-% \setlength{\headwidth}{\textwidth}
-% \addtolength{\headwidth}{\marginparsep}
-% \addtolength{\headwidth}{\marginparwidth}
+% First save the page geometry for when marginnotes are not in use
+\newgeometry{
+  % Preserve the LaTeX default \textwidth and \textheight
+  textwidth =\textwidth,
+  textheight=\textheight,
+  % Include the margin notes space when doing body calculations
+  includemp=false,
+  % Increase margin notes width and seperation
+  marginparwidth=0cm,
+  marginparsep=0cm,
+  % Center doucment body vertically and horizontally
+  hcentering=true,
+  vcentering=true,
+  % Minor tweaks to header and footer seperation
+  headsep   =0.5cm,
+  footskip  =1cm,
+  bindingoffset=0cm
+}
+\savegeometry{default}
+
+% Custom geometry for larger margin notes with assymetric body layout
+\newgeometry{
+  % Preserve the LaTeX default \textwidth and \textheight
+  textwidth =\textwidth,
+  textheight=\textheight,
+  % Include the margin notes space when doing body calculations
+  includemp=true,
+  % Increase margin notes width and seperation
+  marginparwidth=0.25\textwidth,
+  marginparsep=0.5cm,
+  % Center doucment body vertically and horizontally
+  hcentering=true,
+  vcentering=true,
+  % Minor tweaks to header and footer seperation
+  headsep   =0.5cm,
+  footskip  =1cm,
+  bindingoffset=0cm
+}
+\savegeometry{margins}
+
+% Define commands to simplify the loading of custom geometries
+\newcommand{\enablemarginnotes}{%
+  \loadgeometry{margins}
+  \setlength{\headwidth}{\textwidth}
+  \addtolength{\headwidth}{\marginparsep}
+  \addtolength{\headwidth}{\marginparwidth}
+  \pagestyle{fancy}
+}
+
+\newcommand{\disablemarginnotes}{%
+  \loadgeometry{default}
+  \setlength{\headwidth}{\textwidth}
+  \addtolength{\headwidth}{\marginparsep}
+  \addtolength{\headwidth}{\marginparwidth}
+  \pagestyle{plain}
+}
+
+\renewcommand*{\marginfont}{\scriptsize\slshape}
+
+% Force margin notes to use (sloppy) justification
+\renewcommand\raggedrightmarginnote{\sloppy}
+\renewcommand\raggedleftmarginnote{\sloppy}
 
 % Settings used by \usepackage{pgfplots}
 % \pgfplotsset{compat=1.17}
@@ -90,10 +122,10 @@
 % intense citation management (e.g. 5+ sources) is used, biblatex should not
 % be loaded, as it slows down the document compilation process by almost 2X.
 % In order to enable it, see sections/endpage.tex and essay-name.tex's preamble
-%
-% \usepackage[style=mla, backend=biber]{biblatex} % Nice MLA bibliography
-% \addbibresource{citations.bib} % Biblatex. See includes/formatting.tex
-% \SetCiteCommand{\autocite} % For use with csquotes, where you can do:
-% % \textcquote[175]{key}{quoted text here}
+
+\usepackage[style=mla, backend=biber]{biblatex} % Nice MLA bibliography
+\addbibresource{citations.bib} % Biblatex. See includes/formatting.tex
+\SetCiteCommand{\autocite} % For use with csquotes, where you can do:
+% \textcquote[175]{key}{quoted text here}
 
 % Any additional user configuration goes below
