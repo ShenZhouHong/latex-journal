@@ -1,6 +1,8 @@
 # Shen's LaTeX Journal Template
 This is my LaTeX Journal Template Template. It is currently a work in progress.
 
+Requires pandoc version `2.17.2` or greater.
+
 The below documentation is cloned from the LaTeX essay template.
 
 ## Features
