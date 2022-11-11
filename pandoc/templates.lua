@@ -30,3 +30,9 @@ EnumerateTemplate = [[
 %s
 \end{enumerate}
 ]]
+
+ItemizeTemplate = [[
+\begin{itemize}
+%s
+\end{itemize}
+]]

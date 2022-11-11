@@ -1,15 +1,17 @@
+% chktex-file 1 chktex-file 6
+
 % Settings used by \usepackage{fancyhdr}
 \fancypagestyle{fancy}{
   % Fancy Header Formatting
   \renewcommand{\headrulewidth}{0.4pt}
-  \fancyhead[L]{Letters of a Young Philosopher}
+  \fancyhead[L]{\LaTeX\ Journal Template}
   \fancyhead[C]{}
   \fancyhead[R]{Chapter \thechapter}
 
   % Fancy Footer Formatting
   \renewcommand{\footrulewidth}{0pt}
   \fancyfoot[L]{}
-  \fancyfoot[C]{Page \thepage\ of \pageref*{LastPage}}
+  \fancyfoot[C]{Page \thepage\ of~\pageref*{LastPage}}
   \fancyfoot[R]{}
 }
 % Update the plain heading format so that the first page includes page n of m
@@ -20,7 +22,7 @@
   \renewcommand{\footrulewidth}{0pt}
 
   % Ensure page numbers are the form page n of m.
-  \fancyfoot[C]{Page \thepage\ of \pageref*{LastPage}}
+  \fancyfoot[C]{Page \thepage\ of~\pageref*{LastPage}}
 }
 % Set the document header-footer pagestyle to fancy, from above
 \pagestyle{fancy}
@@ -37,7 +39,7 @@
 
 % Packages for typesetting code and pseudocode
 % In order to use minted, you must edit your makefile to -use-shell-escape!
-% \usepackage{minted}                 % Code highlighting: \begin{minted}{python}
+\usepackage{minted}                 % Code highlighting: \begin{minted}{python}
 % \usepackage{algorithm}              % Float environment for pseudocode
 % \usepackage{algpseudocode}          % Typesetting library for pseudocode
 
@@ -64,13 +66,14 @@
   hcentering=true,
   vcentering=true,
   % Minor tweaks to header and footer seperation
+  headheight = 14.5pt,
   headsep   =0.5cm,
   footskip  =1cm,
   bindingoffset=0cm
 }
 \savegeometry{default}
 
-% Custom geometry for larger margin notes with assymetric body layout
+% Custom geometry for larger margin notes with asymmetric body layout
 \newgeometry{
   % Preserve the LaTeX default \textwidth and \textheight
   textwidth =\textwidth,
@@ -84,6 +87,7 @@
   hcentering=true,
   vcentering=true,
   % Minor tweaks to header and footer seperation
+  headheight = 14.5pt,
   headsep   =0.5cm,
   footskip  =1cm,
   bindingoffset=0cm
@@ -109,9 +113,9 @@
 
 \renewcommand*{\marginfont}{\scriptsize\slshape}
 
-% Force margin notes to use (sloppy) justification
-\renewcommand\raggedrightmarginnote{\sloppy}
-\renewcommand\raggedleftmarginnote{\sloppy}
+% % Force margin notes to use (sloppy) justification
+% \renewcommand\raggedrightmarginnote{\sloppy}
+% \renewcommand\raggedleftmarginnote{\sloppy}
 
 % Settings used by \usepackage{pgfplots}
 % \pgfplotsset{compat=1.17}

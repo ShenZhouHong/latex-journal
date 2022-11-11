@@ -225,3 +225,6 @@ TSWLatexianTemp*
 
 # XML Document Metadata (Generated during make)
 *.xmpi
+
+# Minted files (latex code highlighting)
+_minted-journal/

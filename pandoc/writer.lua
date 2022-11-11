@@ -4,12 +4,20 @@
 -- These filters take as input elements of the pandoc Abstract Syntax Tree (AST)
 -- and return modified AST objects.
 
+-- Get script path, so we can load additional files without problems.
+-- Anthony Gore CC BY-SA 3.0
+-- https://stackoverflow.com/a/23535333
+function script_path()
+    local str = debug.getinfo(2, "S").source:sub(2)
+    return str:match("(.*/)") or "."
+ end
+
 -- Load template files. These are template-strings used for substitutions, NOT
 -- pandoc templates!
-local templates = require("templates")
+dofile(script_path() .."/templates.lua")
 
 -- Utilities and debug table-printing library
-dofile("utilities.lua")
+dofile(script_path() .. "/utilities.lua")
 
 -- Default Writer() function. Expected in pandoc 'new-style' (i.e. post 2.17.2).
 function Writer (doc, opts)
@@ -87,6 +95,22 @@ function Writer (doc, opts)
             -- Serialize table of list-strings into one large string with \n's
             local list_elements_string = SerializeListItems(list_elements)
             local template = EnumerateTemplate
+
+            return pandoc.RawInline(
+                'latex',
+                string.format(template, list_elements_string)
+            )
+        end,
+
+        -- Make our own unordered lists 'clean' without extra \tightlist that
+        -- pandoc always adds
+        BulletList = function (element)
+            -- The contents of OrderedList is a Lua Table which must be parsed
+            local list_elements = element.content
+
+            -- Serialize table of list-strings into one large string with \n's
+            local list_elements_string = SerializeListItems(list_elements)
+            local template = ItemizeTemplate
 
             return pandoc.RawInline(
                 'latex',
