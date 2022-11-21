@@ -73,50 +73,6 @@
 }
 \savegeometry{default}
 
-% Custom geometry for larger margin notes with asymmetric body layout
-\newgeometry{
-  % Preserve the LaTeX default \textwidth and \textheight
-  textwidth =\textwidth,
-  textheight=\textheight,
-  % Include the margin notes space when doing body calculations
-  includemp=true,
-  % Increase margin notes width and seperation
-  marginparwidth=0.25\textwidth,
-  marginparsep=0.5cm,
-  % Center doucment body vertically and horizontally
-  hcentering=true,
-  vcentering=true,
-  % Minor tweaks to header and footer seperation
-  headheight = 14.5pt,
-  headsep   =0.5cm,
-  footskip  =1cm,
-  bindingoffset=0cm
-}
-\savegeometry{margins}
-
-% Define commands to simplify the loading of custom geometries
-\newcommand{\enablemarginnotes}{%
-  \loadgeometry{margins}
-  \setlength{\headwidth}{\textwidth}
-  \addtolength{\headwidth}{\marginparsep}
-  \addtolength{\headwidth}{\marginparwidth}
-  \pagestyle{fancy}
-}
-
-\newcommand{\disablemarginnotes}{%
-  \loadgeometry{default}
-  \setlength{\headwidth}{\textwidth}
-  \addtolength{\headwidth}{\marginparsep}
-  \addtolength{\headwidth}{\marginparwidth}
-  \pagestyle{plain}
-}
-
-\renewcommand*{\marginfont}{\scriptsize\slshape}
-
-% % Force margin notes to use (sloppy) justification
-% \renewcommand\raggedrightmarginnote{\sloppy}
-% \renewcommand\raggedleftmarginnote{\sloppy}
-
 % Settings used by \usepackage{pgfplots}
 % \pgfplotsset{compat=1.17}
 % \pgfplotsset{samples=300}

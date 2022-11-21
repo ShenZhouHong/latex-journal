@@ -37,12 +37,11 @@
 \author{
   Shen Zhou Hong
 }
-\date{2022 -- 2023}
+\date{2022 --- 2023}
 
 % Document Begins
 \begin{document}
 
-\disablemarginnotes
 \frontmatter
 
 \maketitle
@@ -53,13 +52,11 @@
 
 \include{sections/preface.tex}
 
-\enablemarginnotes
 \mainmatter
 
 % Journal entries are automatically included from entries/ using lua
 \directlua{dofile(\string"include-entries.lua\string")}
 
-\disablemarginnotes
 \backmatter
 
 \include{sections/backmatter.tex}

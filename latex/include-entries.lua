@@ -60,13 +60,8 @@ function include_entries(directory)
             --
             -- For more info, see:
             -- https://tex.stackexchange.com/a/662126
-            -- 
-            -- Note: We also use the \disablemarginnotes and \enablemarginnotes
-            --       macros as defined in template/configuration.tex, in order
-            --       to assist with changes in page geometry.
-            tex.sprint("\\disablemarginnotes")
+
             tex.sprint("\\part{ \\DTMenglishmonthname{" .. month .. "}}")
-            tex.sprint("\\enablemarginnotes")
         end
         past_month = month
 
