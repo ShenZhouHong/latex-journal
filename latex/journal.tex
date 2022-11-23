@@ -17,17 +17,17 @@
 % For more information on documentclass configuration, see:
 % https://texblog.org/2013/02/13/latex-documentclass-options-illustrated/#formula
 \documentclass[
-  12pt,       % 10pt, 11pt, 12pt
-  a4paper,    % a4paper, letterpaper, a5paper, b5paper, executivepaper, legalpaper
-  final,      % draft
-  onecolumn,  % twocolumn
-  oneside,    % twoside
-  titlepage % titlepage
-]{book}
+  protrudelabels,
+  onehalfspacing,
+  extraligatures,
+  notitlepage,
+  english
+]{humanize-journal}
 
 % Template preamble files. These should not be modified.
-\input{template/packages.tex}
-\input{template/formatting.tex}
+% \input{template/packages.tex}
+% \input{template/formatting.tex}
+\input{configuration.tex}
 
 % Document Title, Author, and Date
 \title{
@@ -43,6 +43,7 @@
 \begin{document}
 
 \frontmatter
+\pagestyle{frontmatter}
 
 \maketitle
 
@@ -53,11 +54,13 @@
 \include{sections/preface.tex}
 
 \mainmatter
+\pagestyle{mainmatter}
 
 % Journal entries are automatically included from entries/ using lua
 \directlua{dofile(\string"include-entries.lua\string")}
 
 \backmatter
+\pagestyle{backmatter}
 
 \include{sections/backmatter.tex}
 

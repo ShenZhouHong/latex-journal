@@ -1,7 +1,20 @@
 % chktex-file 1 chktex-file 6
 
-% Settings used by \usepackage{fancyhdr}
-\fancypagestyle{fancy}{
+% Configuration for 'fancy' headers and footers
+\usepackage{fancyhdr}               % For fancy headings
+\usepackage{lastpage}               % Gives us \lastpage
+\usepackage{lipsum}
+
+\fancypagestyle{plain}{
+  % Clear all definitions from the fancy pagestyle
+  \fancyhf{}
+  \renewcommand{\headrulewidth}{0pt}
+  \renewcommand{\footrulewidth}{0pt}
+
+  \fancyfoot[C]{Page \thepage}
+}
+
+\fancypagestyle{mainmatter}[plain]{
   % Fancy Header Formatting
   \renewcommand{\headrulewidth}{0.4pt}
   \fancyhead[L]{\LaTeX\ Journal Template}
@@ -11,21 +24,17 @@
   % Fancy Footer Formatting
   \renewcommand{\footrulewidth}{0pt}
   \fancyfoot[L]{}
-  \fancyfoot[C]{Page \thepage\ of~\pageref*{LastPage}}
+  \fancyfoot[C]{Page \thepage}
   \fancyfoot[R]{}
 }
-% Update the plain heading format so that the first page includes page n of m
-\fancypagestyle{plain}{
-  % Clear all definitions from the fancy pagestyle
-  \fancyhf{}
-  \renewcommand{\headrulewidth}{0pt}
-  \renewcommand{\footrulewidth}{0pt}
 
-  % Ensure page numbers are the form page n of m.
-  \fancyfoot[C]{Page \thepage\ of~\pageref*{LastPage}}
+\fancypagestyle{frontmatter}[plain]{
+
 }
-% Set the document header-footer pagestyle to fancy, from above
-\pagestyle{fancy}
+
+\fancypagestyle{backmatter}[frontmatter]{
+  
+}
 
 % Mathematical typesetting packages
 % \usepackage{amsmath}                % Needed for most math things.
@@ -83,9 +92,5 @@
 % be loaded, as it slows down the document compilation process by almost 2X.
 % In order to enable it, see sections/endpage.tex and essay-name.tex's preamble
 
-\usepackage[style=mla, backend=biber]{biblatex} % Nice MLA bibliography
+\usepackage[style=ieee]{biblatex} % Nice MLA bibliography
 \addbibresource{citations.bib} % Biblatex. See includes/formatting.tex
-\SetCiteCommand{\autocite} % For use with csquotes, where you can do:
-% \textcquote[175]{key}{quoted text here}
-
-% Any additional user configuration goes below
