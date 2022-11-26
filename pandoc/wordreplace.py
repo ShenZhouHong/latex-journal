@@ -32,32 +32,39 @@ def preserve_case(original: str, substitution:str) -> str:
     Auxiliary function which allows us to preserve case (i.e. capitalization) of
     the original string with the substituted string.
     """
-
-    # First, find the index of the ligature in the substitution
-    for i, char in enumerate(substitution):
-        if not char.isascii():
-            break
+    # First, take care of the trivial cases
+    if original.isupper():
+        return substitution.upper()
+    elif original.islower():
+        return substitution.lower()
     else:
-        # If there are no ligatures, simple case substitution. This is a list
-        # comprehension that iterates over index, letter in substitution,
-        # and generates a new string with the right case.
-        new: list[str] = [
-            letter.lower() if original[index].islower()
-            else letter.upper()
-            for index, letter in enumerate(substitution)
-        ]
-        return "".join(new)
-
-    
-    # Define the ligature, in the correct case
-    case = str.lower if original[i].islower() else str.upper
-    
-    # Return the constructed substitute string w/ letters from the original
-    return (
-        f"{original[:i]}"           # Original letters
-        f"{case(substitution[i])}"  # Ligature (in right case)
-        f"{original[i + 2:]}"       # Original letters (cont.)
-    )
+        # Otherwise, if the capitalisation is non-trivial:
+        for i, char in enumerate(substitution):
+            # Find the index of the ligature in the substitution
+            if not char.isascii():
+                break
+        else:
+            # If we cannot find a ligature, then this is a simple substitution.
+            # Generate the substitution using list comprehension.
+            new: list[str] = [
+                # Note that we use the modulo of the original's length, so that in
+                # cases where len(original) != len(substitution), we do not end up
+                # going out of bounds.
+                letter.upper() if original[index % (len(original) - 1)].isupper()
+                else letter.lower()
+                for index, letter in enumerate(substitution)
+            ]
+            return "".join(new)
+        
+        # Define the ligature, in the correct case
+        case = str.lower if original[i].islower() else str.upper
+        
+        # Return the constructed substitute string w/ letters from the original
+        return (
+            f"{original[:i]}"           # Original letters
+            f"{case(substitution[i])}"  # Ligature (in right case)
+            f"{original[i + 2:]}"       # Original letters (cont.)
+        )
 
 def action(element, doc):
     """
