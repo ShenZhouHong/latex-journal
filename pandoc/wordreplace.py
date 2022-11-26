@@ -12,7 +12,8 @@ import csv
 ruleset_files: list[str] = [
     './pandoc/ae-ligature.csv',
     './pandoc/oe-ligature.csv',
-    './pandoc/diaeresis.csv'
+    './pandoc/diaeresis.csv',
+    './pandoc/custom.csv'
 ]
 
 # Initialise a ruleset dict containing "search":"replace" as key-value pairs
@@ -34,37 +35,25 @@ def preserve_case(original: str, substitution:str) -> str:
     """
     # First, take care of the trivial cases
     if original.isupper():
+        # All uppercase e.g. UPPER
         return substitution.upper()
     elif original.islower():
+        # All lowercase e.g. lower
         return substitution.lower()
+    elif original[0].isupper and original[1:].islower():
+        # Title case    e.g. Title
+        return substitution[0].upper() + substitution[1:].lower()
     else:
-        # Otherwise, if the capitalisation is non-trivial:
-        for i, char in enumerate(substitution):
-            # Find the index of the ligature in the substitution
-            if not char.isascii():
-                break
-        else:
-            # If we cannot find a ligature, then this is a simple substitution.
-            # Generate the substitution using list comprehension.
-            new: list[str] = [
-                # Note that we use the modulo of the original's length, so that in
-                # cases where len(original) != len(substitution), we do not end up
-                # going out of bounds.
-                letter.upper() if original[index % (len(original) - 1)].isupper()
-                else letter.lower()
-                for index, letter in enumerate(substitution)
-            ]
-            return "".join(new)
-        
-        # Define the ligature, in the correct case
-        case = str.lower if original[i].islower() else str.upper
-        
-        # Return the constructed substitute string w/ letters from the original
-        return (
-            f"{original[:i]}"           # Original letters
-            f"{case(substitution[i])}"  # Ligature (in right case)
-            f"{original[i + 2:]}"       # Original letters (cont.)
-        )
+        # For sPoNgeCaSe Generate the substitution using list comprehension.
+        new: list[str] = [
+            # Note that we use the modulo of the original's length, so that in
+            # cases where len(original) != len(substitution), we do not end up
+            # going out of bounds.
+            letter.upper() if original[index % (len(original) - 1)].isupper()
+            else letter.lower()
+            for index, letter in enumerate(substitution)
+        ]
+        return "".join(new)
 
 def action(element, doc):
     """
