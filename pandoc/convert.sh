@@ -29,5 +29,6 @@ do
     --template="$DIR/template.tex" \
     --from markdown-auto_identifiers+raw_tex \
     --to "$DIR/writer.lua" \
+    --filter "$DIR/wordreplace.py" \
     --out "${filename%.*}".tex
 done
