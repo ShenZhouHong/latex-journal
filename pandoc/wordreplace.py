@@ -62,13 +62,24 @@ def action(element, doc):
     """
     # For every string element
     if isinstance(element, pf.Str):
-        # Derive the ruleset key from element.text by normalising it
-        key = element.text.strip(string.punctuation).lower()
+        # Derive the ruleset key from element.text by normalising it.
+        # We do some primitive lemmatizing by removing the plural 's'
+        if len(element.text.strip(string.punctuation).lower()) > 0 and element.text.strip(string.punctuation).lower()[-1] == 's':
+            key = element.text.strip(string.punctuation).lower()[:-1]
+            plural = True
+        else:
+            key = element.text.strip(string.punctuation).lower()
+            plural = False
 
         # If the word matches a rule in our ruleset
         if key in ruleset:
             # Build case-sensitive replacement and replace text
             replacement = preserve_case(element.text, ruleset[key])
+
+            # If the word is plural, make sure to add the plural 's' back
+            if plural:
+                replacement += "s"
+                
             element.text = replacement
 
 def main(doc=None):
