@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 # This script is a Python pandoc filter that is designed to perform word
 # substitutions according to CSV rulesets. These substitutions are currently
 # used for ae, oe ligatures, as well as diaeresis. The rulesets are CSV files in
@@ -8,7 +9,9 @@ import panflute as pf
 import string
 import csv
 
-# List of word substitution rulesets, in the form of CSV files
+# List of word substitution rulesets, in the form of CSV files. These rulesets
+# take the form of lines of search,replace strings, where search is the term
+# that is being looked for, and replace is the substitution.
 ruleset_files: list[str] = [
     './pandoc/ae-ligature.csv',
     './pandoc/oe-ligature.csv',
@@ -43,9 +46,16 @@ def preserve_case(original: str, substitution:str) -> str:
     elif original[0].isupper and original[1:].islower():
         # Title case    e.g. Title
         return substitution[0].upper() + substitution[1:].lower()
+    
+    # Non-trivial case: e.g. SpOnGeCaSe
     else:
-        # For sPoNgeCaSe Generate the substitution using list comprehension.
-        new: list[str] = [
+        # We generate a list of characters using a list comprehension. The case
+        # logic is held within the list comprehension here. We essentially
+        # iterate over the modulo of the original string (wrapping back to the)
+        # start every time we exceed it, for cases when the substitute is longer
+        # than the original, and copy the case from each letter of the original
+        # to the substitution string.
+        character_list: list[str] = [
             # Note that we use the modulo of the original's length, so that in
             # cases where len(original) != len(substitution), we do not end up
             # going out of bounds.
@@ -53,7 +63,9 @@ def preserve_case(original: str, substitution:str) -> str:
             else letter.lower()
             for index, letter in enumerate(substitution)
         ]
-        return "".join(new)
+        # Finally, we join all the letters in the character-list together, and
+        # return it.
+        return "".join(character_list)
 
 def action(element, doc):
     """
@@ -65,11 +77,11 @@ def action(element, doc):
         # Derive the ruleset key from element.text by normalising it.
         # We do some primitive lemmatizing by removing the plural 's'
         if len(element.text.strip(string.punctuation).lower()) > 0 and element.text.strip(string.punctuation).lower()[-1] == 's':
-            key = element.text.strip(string.punctuation).lower()[:-1]
-            plural = True
+            key: str = element.text.strip(string.punctuation).lower()[:-1]
+            plural: bool = True
         else:
             key = element.text.strip(string.punctuation).lower()
-            plural = False
+            plural: bool = False
 
         # If the word matches a rule in our ruleset
         if key in ruleset:
@@ -79,7 +91,7 @@ def action(element, doc):
             # If the word is plural, make sure to add the plural 's' back
             if plural:
                 replacement += "s"
-                
+
             element.text = replacement
 
 def main(doc=None):
