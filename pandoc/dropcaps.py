@@ -39,8 +39,15 @@ def action(element, doc):
     """
     # For the first element of the document that is a paragraph:
     if isinstance(element.parent, pf.Doc) and isinstance(element, pf.Para) and element.index == 0:
-        # Change the first word in that paragraph into a dropcap
-        element.content[0] = create_dropcap(element.content[0].text)
+
+        # First, we do some basic validation:
+        if isinstance(element.content[0], pf.Str) == False:
+            # If the first element in the paragraph is not a string, do nothing
+            # NB: In panflute return None means we will not alter the element.
+            return None
+        else:
+            # Change the first word in that paragraph into a dropcap
+            element.content[0] = create_dropcap(element.content[0].text)
 
 def main(doc=None):
     return pf.run_filter(action, doc=doc)
