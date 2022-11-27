@@ -26,9 +26,11 @@ do
     --standalone \
     --wrap=none \
     --columns=80 \
+    --biblatex \
     --template="$DIR/template.tex" \
-    --from markdown-auto_identifiers+raw_tex \
+    --from markdown-auto_identifiers+raw_tex+citations \
     --to "$DIR/writer.lua" \
-    --filter "$DIR/wordreplace.py" \
+    --filter "$DIR/wordreplace.py"  \
+    --filter "$DIR/dropcaps.py" \
     --out "${filename%.*}".tex
 done

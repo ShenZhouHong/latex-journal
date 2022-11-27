@@ -5,6 +5,13 @@
 \usepackage{lastpage}               % Gives us \lastpage
 \usepackage{lipsum}
 
+% Used to create dropcaps with \lettrine
+\usepackage{lettrine}
+\usepackage{Zallman}
+
+% Set the drop cap font
+\renewcommand\LettrineFontHook{\Zallmanfamily}
+
 \fancypagestyle{plain}{
   % Clear all definitions from the fancy pagestyle
   \fancyhf{}
