@@ -8,6 +8,7 @@
 import panflute as pf
 import string
 import csv
+import re
 
 # List of word substitution rulesets, in the form of CSV files. These rulesets
 # take the form of lines of search,replace strings, where search is the term
@@ -74,25 +75,27 @@ def action(element, doc):
     """
     # For every string element
     if isinstance(element, pf.Str):
-        # Derive the ruleset key from element.text by normalising it.
+        match: str = element.text.strip(string.punctuation)
+
         # We do some primitive lemmatizing by removing the plural 's'
-        if len(element.text.strip(string.punctuation).lower()) > 0 and element.text.strip(string.punctuation).lower()[-1] == 's':
-            key: str = element.text.strip(string.punctuation).lower()[:-1]
+        if len(match.lower()) > 0 and match.lower()[-1] == 's':
+            key: str = match.lower()[:-1]
             plural: bool = True
         else:
-            key = element.text.strip(string.punctuation).lower()
+            key = match.lower()
             plural: bool = False
 
         # If the word matches a rule in our ruleset
         if key in ruleset:
             # Build case-sensitive replacement and replace text
-            replacement = preserve_case(element.text, ruleset[key])
+            replacement = preserve_case(match, ruleset[key])
 
             # If the word is plural, make sure to add the plural 's' back
             if plural:
                 replacement += "s"
 
-            element.text = replacement
+            # We reintroduce replacement w/ regex to preserve punctuation
+            element.text = re.sub(match, replacement, element.text)
 
 def main(doc=None):
     return pf.run_filter(action, doc=doc)
