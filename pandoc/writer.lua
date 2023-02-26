@@ -14,7 +14,7 @@ function script_path()
 
 -- Load template files. These are template-strings used for substitutions, NOT
 -- pandoc templates!
-dofile(script_path() .."/templates.lua")
+dofile(script_path() .."/latex-strings.lua")
 
 -- Utilities and debug table-printing library
 dofile(script_path() .. "/utilities.lua")
@@ -31,6 +31,32 @@ function Writer (doc, opts)
             -- Load template file from ./templates.lua
             local template = BlockQuoteTemplate
             
+            -- First we convert any existing 'i.e. inline' formatting into LaTeX
+            local inline_doc = pandoc.Pandoc(element.content)
+            local inline_latex = pandoc.write(inline_doc, 'latex')
+
+            local converted = pandoc.RawInline('latex', string.format(template, inline_latex))
+            return converted
+        end,
+
+        -- We want our single-quotes to be csquote-style \enquote*{} instead of ticks.
+        SingleQuote = function (element)
+            -- Load template file from ./templates.lua
+            local template = SingleQuoteTemplate
+
+            -- First we convert any existing 'i.e. inline' formatting into LaTeX
+            local inline_doc = pandoc.Pandoc(element.content)
+            local inline_latex = pandoc.write(inline_doc, 'latex')
+
+            local converted = pandoc.RawInline('latex', string.format(template, inline_latex))
+            return converted
+        end,
+
+        -- We want our double-quotes to be csquote-style \enquote{} instead of doubleticks.
+        DoubleQuote = function (element)
+            -- Load template file from ./templates.lua
+            local template = DoubleQuoteTemplate
+
             -- First we convert any existing 'i.e. inline' formatting into LaTeX
             local inline_doc = pandoc.Pandoc(element.content)
             local inline_latex = pandoc.write(inline_doc, 'latex')
