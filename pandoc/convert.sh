@@ -4,6 +4,21 @@
 
 set -eEu -o pipefail
 
+# Check if pandoc is available
+if ! command -v pandoc &> /dev/null
+then
+    echo "Error: pandoc is not available. Please install pandoc before running this script."
+    exit 1
+fi
+
+# If no arguments were provided or the --help/-h flag was passed, print usage information
+if [[ $# -eq 0 ]] || [[ $1 == "-h" || $1 == "--help" ]]
+then
+    echo "Usage: $(basename $0) file1.md [file2.md ...]"
+    echo "Convert one or more Markdown files to LaTeX using pandoc."
+    exit 0
+fi
+
 # Retrieve script source directory as DIR. This allows relative pathing to work
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
